@@ -25,10 +25,16 @@ function getTodos() {
 
 
 
-axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+// axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+// .then(res=>showOutput(res))
+// .catch(err=>console.error(err))
+
+
+
+
+axios('https://jsonplaceholder.typicode.com/todos?_limit=5')// when we run axios without any method, it means the get method by default
 .then(res=>showOutput(res))
 .catch(err=>console.error(err))
-
 
 }
 
