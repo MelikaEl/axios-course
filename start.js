@@ -40,7 +40,14 @@ axios('https://jsonplaceholder.typicode.com/todos?_limit=5')// when we run axios
 
 // POST REQUEST
 function addTodo() {
-  console.log('POST Request');
+  axios({
+    method:'post',
+    url: 'https://jsonplaceholder.typicode.com/todos',
+    data: {
+      title: 'New Todo',//title and completed are created in the server, I mean when we get the data each data comes with title and completed parameter
+      completed:false
+    }
+  })
 }
 
 // PUT/PATCH REQUEST
