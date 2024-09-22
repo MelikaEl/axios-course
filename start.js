@@ -14,7 +14,7 @@ function getTodos() {
 
 
 
-
+//this is the shorter format of the above code (eliminate url object): 
 //  axios.get('https://jsonplaceholder.typicode.com/todos',{
 //   params:{_limit:5}
 //  })
@@ -24,7 +24,7 @@ function getTodos() {
 
 
 
-
+//this is even more shorter format of the above code (eliminate params object): 
 // axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
 // .then(res=>showOutput(res))
 // .catch(err=>console.error(err))
