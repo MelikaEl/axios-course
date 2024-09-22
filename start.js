@@ -11,11 +11,25 @@ function getTodos() {
   // .then(res=>showOutput(res))
   // .catch(err=>console.log.error(err))
 
- axios.get('https://jsonplaceholder.typicode.com/todos',{
-  params:{_limit:5}
- })
- .then(res=>showOutput(res))
- .catch(err=>console.error(err))
+
+
+
+
+//  axios.get('https://jsonplaceholder.typicode.com/todos',{
+//   params:{_limit:5}
+//  })
+//  .then(res=>showOutput(res))
+//  .catch(err=>console.error(err))
+
+
+
+
+
+axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+.then(res=>showOutput(res))
+.catch(err=>console.error(err))
+
+
 }
 
 // POST REQUEST
