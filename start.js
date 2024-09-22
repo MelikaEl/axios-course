@@ -2,9 +2,12 @@
 function getTodos() {
   axios({
     method:'get',
-    url: 'https://jsonplaceholder.typicode.com/todos'
+    url: 'https://jsonplaceholder.typicode.com/todos',
+    params:{
+      _limit:5
+    }
   })
-  .then(res=>console.log(res.data))
+  .then(res=>showOutput(res))
   .catch(err=>console.log.error(err))
 }
 
