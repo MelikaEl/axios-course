@@ -53,8 +53,13 @@ function cancelToken() {
 // AXIOS INSTANCES
 
 // Show output in browser
-function showOutput(res) {
-  document.getElementById('res').innerHTML = `
+function showOutput(res) {// The function showOutput takes a single parameter res, which is expected to be an object containing information about a response.
+ //The function updates the inner HTML of an element with the ID res.
+ //${res.status}: This section creates a Bootstrap card with a header that displays the status of the response. The res.status value is interpolated into the HTML string.
+ //${JSON.stringify(res.headers, null, 2)}: This section creates another Bootstrap card with the header "Headers". The headers of the response, stored in res.headers, are converted to a JSON string with JSON.stringify and displayed in a <pre> block for better readability.
+ //${JSON.stringify(res.data, null, 2)}: This section creates a card with the header "Data". The data of the response, stored in res.data, is also converted to a JSON string and displayed in a <pre> block.
+ //${JSON.stringify(res.config, null, 2)}: This section creates a card with the header "Config". The configuration of the response, stored in res.config, is similarly converted to a JSON string and displayed.
+ document.getElementById('res').innerHTML = `
   <div class="card card-body mb-4">
     <h5>Status: ${res.status}</h5>
   </div>
@@ -86,7 +91,7 @@ function showOutput(res) {
     </div>
   </div>
 `;
-}
+}//The showOutput function takes a response object (res) and updates the HTML content of an element with the ID res to display the status, headers, data, and configuration of the response. It uses Bootstrap's card components for layout and JSON stringification for readability. If you'd like a visual representation of a response, you can toggle on image generation mode in the settings panel.
 
 // Event listeners
 document.getElementById('get').addEventListener('click', getTodos);
