@@ -89,7 +89,9 @@ axios.patch('https://jsonplaceholder.typicode.com/todos/1',{
 
 // DELETE REQUEST
 function removeTodo() {
-  console.log('DELETE Request');
+ axios.delete('https://jsonplaceholder.typicode.com/todos/1')
+ .then(res=>showOutput(res))
+ .catch(err=>console.error(err));
 }
 
 // SIMULTANEOUS DATA
