@@ -94,9 +94,18 @@ function removeTodo() {
  .catch(err=>console.error(err));
 }
 
-// SIMULTANEOUS DATA
+// SIMULTANEOUS DATA : with axios.all
 function getData() {
-  console.log('Simultaneous Request');
+  axios.all([
+    axios.get('https://jsonplaceholder.typicode.com/todos'),
+    axios.get('https://jsonplaceholder.typicode.com/posts'),
+  ])
+  .then(res=>{
+    console.log(res[0]);//res[0] logs the response from the first request (todos)
+    console.log(res[1]);//res[1] logs the response from the second request (posts).
+    showOutput(res[1])//This line calls a function showOutput with the second response (posts)
+  })
+  .catch(err=>console.error(err));
 }
 
 // CUSTOM HEADERS
