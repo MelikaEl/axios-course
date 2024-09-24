@@ -146,7 +146,7 @@ function transformResponse() {
 
 // ERROR HANDLING
 function errorHandling() {
- axios.get("https://jsonplaceholder.typicode.com/todoss")
+ axios.get("https://jsonplaceholder.typicode.com/todoss") //we add additional 's' for making the URL incorrect that it gives 404 error
  .then(res=>showOutput(res))
  .catch(err=>{
   if (err.response){
@@ -169,8 +169,61 @@ function errorHandling() {
 
 // CANCEL TOKEN
 function cancelToken() {
-  console.log("Cancel Token");
+  const abortController = new AbortController();
+
+  axios
+    .get('https://jsonplaceholder.typicode.com/todos', {
+      signal: abortController.signal
+    })
+    .then(res => showOutput(res))
+    .catch(error => {
+      if (axios.isCancel(error)) {
+        console.log('Request canceled', error.message);
+      }
+    });
+
+  if (true) {
+    abortController.abort('Request canceled!');
+  }
 }
+/*
+Let's break down this code line by line:
+
+**1. `function abortController() { ... }`**
+   - This line defines a function named `abortController`.  This function is designed to demonstrate how to cancel an Axios request using `AbortController`.
+
+**2. `const abortController = new AbortController();`**
+   - This line creates a new instance of the `AbortController` object and stores it in a variable named `abortController`.  The `AbortController` is a built-in browser API that provides a way to cancel asynchronous operations, like HTTP requests.
+
+**3. `axios.get('https://jsonplaceholder.typicode.com/todos', { signal: abortController.signal })`**
+   - This line uses Axios to send a GET request to the URL `https://jsonplaceholder.typicode.com/todos` (a popular placeholder API for testing).
+   - `signal: abortController.signal` is the key part here:
+      - `signal` is an option passed to the Axios request. It tells Axios to use the `AbortSignal` associated with the `abortController` to handle cancellation.
+      - `abortController.signal` is the `AbortSignal` object, which is a special type of signal that can be used to cancel the request.
+
+**4. `.then(res => showOutput(res))`**
+   - If the request is successful, the `.then()` method is called, passing the response data (`res`) as an argument.
+   - The code assumes there's a separate function `showOutput(res)` (not shown here) that handles displaying the response data.
+
+**5. `.catch(error => { ... })`**
+   - If the request fails for any reason, the `.catch()` method is called, passing the error object (`error`) as an argument.
+   - Inside the `.catch()` block:
+     - `if (axios.isCancel(error)) { ... }` checks if the error is specifically due to a request cancellation.  This check is important because Axios provides a helper function `isCancel(error)` to determine if a request was canceled.
+     - `console.log('Request canceled', error.message);` logs a message to the console if the request was canceled, along with the optional message that was provided when the request was aborted.
+
+**6. `if (true) { abortController.abort('Request canceled!'); }`**
+   - This line is the key to triggering the cancellation:
+      - The `if (true)` statement will always evaluate to true, so the code inside the block will always be executed.
+      - `abortController.abort('Request canceled!')` calls the `abort()` method on the `abortController` object.  This method sets a flag on the `AbortSignal` associated with the `abortController`, signaling to Axios to cancel the request.
+      - The message 'Request canceled!' is passed as an optional message that will be included in the error object if the request is canceled.
+
+**In Summary:**
+
+This code demonstrates how to cancel an Axios request using `AbortController`. It sets up a request, and then immediately triggers a cancellation. This simple example shows how to use the `AbortController` API to control the lifecycle of asynchronous requests and handle cancellation gracefully.
+*/
+
+
+
 
 // INTERCEPTING REQUESTS & RESPONSES
 axios.interceptors.request.use(
