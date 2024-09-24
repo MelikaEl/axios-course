@@ -120,7 +120,21 @@ function getData() {
 
 // CUSTOM HEADERS
 function customHeaders() {
-  console.log('Custom Headers');
+  const config={
+    headers:{
+        'Content-Type':'application/json',
+        Authorization:'sometoken'
+    }
+  };
+  axios.post('https://jsonplaceholder.typicode.com/todos',
+    {
+      title:'New Todo',
+      completed:false
+    },
+    config
+  )
+  .then(res=>showOutput(res))
+  .catch(err=>console.error(err))
 }
 
 // TRANSFORMING REQUESTS & RESPONSES
@@ -150,6 +164,198 @@ axios.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+/* 
+axios.interceptors.request.use(...):
+
+This line is using Axios's interceptor feature for HTTP requests.
+Interceptors allow you to intercept requests or responses before they are handled by then or catch.
+The use method takes two arguments: a success handler and an error handler.
+
+Success handler: config => { ... }:
+
+This is an arrow function that receives the request configuration object as its parameter.
+Inside the success handler:
+This logs information about the outgoing request:
+config.method.toUpperCase(): The HTTP method (GET, POST, etc.) in uppercase.
+config.url: The URL the request is being sent to.
+new Date().getTime(): The current timestamp in milliseconds.
+return config;:
+
+After logging, the configuration object is returned unchanged.
+This allows the request to proceed normally.
+Error handler: error => { ... }:
+
+This function handles any errors that occur during the request configuration phase.
+return Promise.reject(error):
+
+If an error occurs, it's rejected as a Promise.
+This allows the error to be caught later in the chain by a .catch() method or a try/catch block.
+In summary, this code sets up an interceptor for all outgoing Axios requests. It logs information about each request (method, URL, and timestamp) before the request is sent. If there's an error in configuring the request, it ensures that error is properly propagated for handling elsewhere in the application. This is useful for debugging, logging, or potentially modifying requests before they're sent.
+
+explain this code line by line in detail:
+axios.interceptors.request.use(
+config=>{
+console.log(
+`${config.method.toUpperCase()} request send to ${config.url} at ${new Date().getTime()}`
+)
+return config;
+},
+error => {
+return Promise.reject(error)
+}
+)
+Certainly! Let's break down this code line by line and explain what each part does:
+
+javascript
+
+
+axios.interceptors.request.use(
+  config => {
+    console.log(
+      `${config.method.toUpperCase()} request send to ${config.url} at ${new Date().getTime()}`
+    )
+    return config;
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+axios.interceptors.request.use(...):
+
+This line is using Axios's interceptor feature for HTTP requests.
+Interceptors allow you to intercept requests or responses before they are handled by then or catch.
+The use method takes two arguments: a success handler and an error handler.
+
+Success handler: config => { ... }:
+
+This is an arrow function that receives the request configuration object as its parameter.
+Inside the success handler:
+
+javascript
+
+
+console.log(
+  `${config.method.toUpperCase()} request send to ${config.url} at ${new Date().getTime()}`
+)
+This logs information about the outgoing request:
+config.method.toUpperCase(): The HTTP method (GET, POST, etc.) in uppercase.
+config.url: The URL the request is being sent to.
+new Date().getTime(): The current timestamp in milliseconds.
+return config;:
+
+After logging, the configuration object is returned unchanged.
+This allows the request to proceed normally.
+Error handler: error => { ... }:
+
+This function handles any errors that occur during the request configuration phase.
+return Promise.reject(error):
+
+If an error occurs, it's rejected as a Promise.
+This allows the error to be caught later in the chain by a .catch() method or a try/catch block.
+In summary, this code sets up an interceptor for all outgoing Axios requests. It logs information about each request (method, URL, and timestamp) before the request is sent. If there's an error in configuring the request, it ensures that error is properly propagated for handling elsewhere in the application. This is useful for debugging, logging, or potentially modifying requests before they're sent.
+
+
+
+
+model: Claude 3.5 Sonnet
+latency: 3737ms
+cost: $0.0418
+what are the headers and their uses in API calls?
+Headers are essential components of API calls, providing vital information about the request and the client. They act like metadata that guide the server in processing the request effectively. Here's a breakdown of headers and their common uses:
+
+Types of Headers:
+
+General Headers: These headers apply to the entire message, regardless of the specific request method or resource.
+
+Content-Type: Specifies the type of data being sent in the request body. Examples include:
+application/json: for sending JSON data.
+application/x-www-form-urlencoded: for submitting form data.
+multipart/form-data: for uploading files.
+Content-Length: Indicates the size of the request body in bytes.
+Date: The date and time the request was sent.
+Cache-Control: Controls how the response can be cached.
+Connection: Defines the connection type (e.g., keep-alive or close).
+Request Headers: These headers provide specific information about the request being made.
+
+Authorization: Used to authenticate the client with the server, often containing an access token or API key.
+Accept: Specifies the data formats the client can accept in the response (e.g., application/json, text/html).
+User-Agent: Identifies the client software making the request (e.g., browser name and version).
+Referer: Indicates the previous page from which the request originated (useful for security and analytics).
+Host: Specifies the host name and port of the server being contacted.
+Response Headers: These headers provide information about the server's response.
+
+Content-Type: Indicates the type of data being sent in the response body.
+Content-Length: Specifies the size of the response body in bytes.
+Last-Modified: The date and time the resource was last modified.
+ETag: An entity tag used for caching and conditional requests.
+Location: Redirects the client to a different URL.
+Set-Cookie: Sends a cookie to the client to store information.
+Uses of Headers:
+
+Authentication: Headers are essential for verifying the identity of the client.
+Data Type Negotiation: Headers like Content-Type and Accept ensure data is transmitted in a format both the client and server understand.
+Caching: Headers like Cache-Control and ETag facilitate efficient caching of responses.
+Security: Headers contribute to security measures like authentication, authorization, and prevention of cross-site scripting (XSS) attacks.
+Server Configuration: Headers can provide information about the server's configuration, such as the server software and version.
+Client Information: Headers like User-Agent and Referer allow servers to gather information about the client.
+Example:
+
+javascript
+
+
+const axios = require('axios');
+
+axios.post('https://api.example.com/users', {
+  name: 'John Doe',
+  email: 'john.doe@example.com'
+}, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer your_access_token' 
+  }
+})
+.then(response => {
+  // Handle successful response
+})
+.catch(error => {
+  // Handle error
+});
+In this example, the Content-Type header indicates the request body is JSON, and the Authorization header provides the access token for authentication.
+
+Understanding headers is crucial for effective API communication. They ensure proper data exchange, security, and efficient handling of requests and responses.
+
+
+
+
+model: GPT-4o Mini
+latency: 1225ms
+cost: $0.0033
+what is the use of config in this code:
+axios.interceptors.request.use(
+config=>{
+console.log(
+`${config.method.toUpperCase()} request send to ${config.url} at ${new Date().getTime()}`
+)
+return config;
+},
+error => {
+return Promise.reject(error)
+}
+)
+In the given code, config is an object that represents the configuration of the Axios request. It contains various properties that define the request, such as the URL, method, headers, data, and more.
+
+When you use axios.interceptors.request.use(), the callback function receives the config object as its argument. This allows you to access and modify the request configuration before the request is sent.
+
+In this specific code, the config object is used for two purposes:
+
+Logging: The code logs information about the outgoing request using the console.log() statement. It accesses the following properties of the config object:
+config.method: The HTTP method of the request (e.g., GET, POST, PUT, DELETE).
+config.url: The URL of the request.
+new Date().getTime(): The current timestamp (not a property of config, but a separate expression).
+*/
+
+
+
 
 // AXIOS INSTANCES
 
