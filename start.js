@@ -148,7 +148,11 @@ function transformResponse() {
 
 // ERROR HANDLING
 function errorHandling() {
- axios.get("https://jsonplaceholder.typicode.com/todoss") //we add additional 's' for making the URL incorrect that it gives 404 error
+ axios.get("https://jsonplaceholder.typicode.com/todoss",{
+  // validateStatus: function(status){
+  //   return status < 500;//Reject only if status is greater or equal to 500
+  // }
+ }) //we add additional 's' for making the URL incorrect that it gives 404 error
  .then(res=>showOutput(res))
  .catch(err=>{
   if (err.response){
@@ -168,6 +172,45 @@ function errorHandling() {
   }
  })
 }
+/*
+In the code you've provided, the `return` statement is part of the `validateStatus` function, which is used to customize how Axios determines whether a response should be treated as an error or not. Let's break down its functionality:
+
+```javascript
+validateStatus: function(status){
+  return status < 500; // Reject only if status is greater or equal to 500
+}
+```
+
+Here's what this `return` statement does:
+
+1. **Custom Error Handling**: By default, Axios considers any HTTP status code outside the 2xx range as an error. The `validateStatus` function allows you to override this behavior.
+
+2. **Evaluating the Status Code**: The function takes the HTTP status code as an argument and returns a boolean value.
+
+3. **Determining Success or Failure**: 
+   - If the function returns `true`, Axios will treat the response as successful.
+   - If it returns `false`, Axios will treat the response as an error.
+
+4. **Specific Behavior in This Case**: 
+   - The function returns `true` for any status code less than 500.
+   - It returns `false` for status codes 500 and above.
+
+5. **Effect on Promise Chain**: 
+   - For status codes < 500, the promise will resolve, and the `then` block will be executed.
+   - For status codes >= 500, the promise will reject, and the `catch` block will be executed.
+
+In your specific example:
+- The URL is intentionally incorrect ('todoss' instead of 'todos'), which will likely result in a 404 status code.
+- Because 404 < 500, the `validateStatus` function will return `true`.
+- This means the response will be treated as successful by Axios, and the `then` block will be executed, not the `catch` block.
+- However, you're still checking for error responses in the `then` block, which is where you'll handle the 404 error.
+
+This approach allows you to handle 4xx errors (like 404) in the `then` block while still treating 5xx errors as rejections that will be caught in the `catch` block. It gives you more fine-grained control over how different types of HTTP errors are handled in your application.
+*/
+
+
+
+
 
 // CANCEL TOKEN
 function cancelToken() {
